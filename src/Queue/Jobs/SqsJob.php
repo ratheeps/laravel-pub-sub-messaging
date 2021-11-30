@@ -6,11 +6,11 @@ namespace Ratheeps\PubSubMessaging\Queue\Jobs;
 use Aws\Sqs\SqsClient;
 use Exception;
 use Illuminate\Container\Container;
-use Illuminate\Queue\Jobs\SqsJob;
+use Illuminate\Queue\Jobs\SqsJob as ParentSqsJob;
 use Illuminate\Support\Arr;
 use Ratheeps\PubSubMessaging\Queue\JobMap;
 
-class SnsJob extends SqsJob
+class SqsJob extends ParentSqsJob
 {
     /** @var JobMap  */
     private $map;

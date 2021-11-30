@@ -8,7 +8,7 @@ use Illuminate\Queue\Connectors\ConnectorInterface;
 use Illuminate\Queue\Connectors\SqsConnector;
 use Illuminate\Support\Arr;
 use Ratheeps\PubSubMessaging\Queue\JobMap;
-use Ratheeps\PubSubMessaging\Queue\SnsQueue;
+use Ratheeps\PubSubMessaging\Queue\SqsQueue;
 use Illuminate\Contracts\Queue\Queue;
 
 class SnsConnector extends SqsConnector implements ConnectorInterface
@@ -29,11 +29,11 @@ class SnsConnector extends SqsConnector implements ConnectorInterface
 
     /**
      * @param array $config
-     * @return Queue|SnsQueue
+     * @return Queue|SqsQueue
      */
     public function connect(array $config)
     {
-        return new SnsQueue(
+        return new SqsQueue(
             $this->createClient($config), $config['queue'], $this->map
         );
     }

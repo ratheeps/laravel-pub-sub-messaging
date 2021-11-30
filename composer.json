@@ -11,7 +11,8 @@
         "illuminate/queue": "^5.4",
         "illuminate/support": "^5.4",
         "aws/aws-sdk-php": "^3.206",
-        "ext-json": "*"
+        "ext-json": "*",
+        "ramsey/uuid": "^4.2"
     },
     "authors": [
         {
