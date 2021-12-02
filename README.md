@@ -121,10 +121,8 @@ PUB_SUB_MESSAGING_SQS_QUEUE=
 
 8. Boot up your queues and profit without having to worry about SQS's 256KB limit :)
 
-## Customization
-
-### Job class example
-
+### Consuming Event
+Create a job like below to handle the event and then map that job to SNS topic in the `pub-sub-messaging.php` config file
 ```php
 <?php
 use Illuminate\Bus\Queueable;
