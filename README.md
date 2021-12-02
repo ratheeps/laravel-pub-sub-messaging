@@ -14,7 +14,9 @@ The **Amazon SQS Extended Client Library for PHP** enables you to manage Amazon 
 * Send a message that references a single message object stored in an Amazon S3 bucket.
 * Get the corresponding message object from an Amazon S3 bucket.
 
-![#ee0701](https://via.placeholder.com/15/ee0701/000000?text=+) Note: This package under development not ready for production
+```diff
+- Note: This package under development not ready for production -
+```
 
 ## Requirements
 
