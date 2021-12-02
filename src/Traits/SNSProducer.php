@@ -6,16 +6,17 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
-use Ratheeps\PubSubMessaging\Publisher\SNSPublisher as PubSubMessagingPublisher;
+use Illuminate\Support\Facades\Log;
+use Ratheeps\PubSubMessaging\Producer\SNSProducer as PubSubMessagingPublisher;
 
 /**
  * Trait SNSPublisher
  * @package Ratheeps\PubSubMessaging\Traits
  */
-trait SNSPublisher
+trait SNSProducer
 {
 
-    public static function bootSNSPublisher()
+    public static function bootSNSProducer()
     {
         static::eventsToBePublish()->each(function ($eventName) {
             return static::$eventName(function (Model $model) use ($eventName) {
@@ -30,7 +31,7 @@ trait SNSPublisher
                         ->withProperties($model->attributeValuesToBePublish())
                         ->publish();
                 }catch (\Exception $e){
-
+                    Log::error("Pub sub message model event publisher failed: {$e->getMessage()}");
                 }
             });
         });
@@ -109,7 +110,7 @@ trait SNSPublisher
             }
         }
 
-        //do not published if only ignored attributes are changed
+        //do not publish if only ignored attributes are changed
         return (bool)count(Arr::only($this->getDirty(), $this->attributesToMessage()));
     }
 }

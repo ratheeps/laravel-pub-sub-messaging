@@ -5,8 +5,8 @@ namespace Ratheeps\PubSubMessaging;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Config\Repository;
 use Illuminate\Queue\QueueManager;
-use Ratheeps\PubSubMessaging\Queue\Connectors\SnsConnector;
-use Ratheeps\PubSubMessaging\Queue\JobMap;
+use Ratheeps\PubSubMessaging\Queue\Connectors\PubSubMessagingSqsConnector;
+use Ratheeps\PubSubMessaging\Queue\PubSubMessagingJobMap;
 
 class PubSubMessagingServiceProvider extends ServiceProvider
 {
@@ -28,8 +28,8 @@ class PubSubMessagingServiceProvider extends ServiceProvider
         $this->app->afterResolving(QueueManager::class, function (QueueManager $manager) {
             $config = $this->app->make(Repository::class);
             $manager->addConnector('pub-sub-messaging', function () use ($config) {
-                $map = new JobMap($config->get('pub-sub-messaging.map'));
-                return new SnsConnector($map);
+                $map = new PubSubMessagingJobMap($config->get('pub-sub-messaging.map'));
+                return new PubSubMessagingSqsConnector($map);
             });
         });
     }

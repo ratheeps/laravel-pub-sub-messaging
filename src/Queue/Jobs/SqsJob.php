@@ -8,11 +8,11 @@ use Exception;
 use Illuminate\Container\Container;
 use Illuminate\Queue\Jobs\SqsJob as ParentSqsJob;
 use Illuminate\Support\Arr;
-use Ratheeps\PubSubMessaging\Queue\JobMap;
+use Ratheeps\PubSubMessaging\Queue\PubSubMessagingJobMap;
 
 class SqsJob extends ParentSqsJob
 {
-    /** @var JobMap  */
+    /** @var PubSubMessagingJobMap  */
     private $map;
 
     /**
@@ -22,9 +22,9 @@ class SqsJob extends ParentSqsJob
      * @param array $job
      * @param string $connectionName
      * @param string $queue
-     * @param JobMap $map
+     * @param PubSubMessagingJobMap $map
      */
-    public function __construct(Container $container, SqsClient $sqs, array $job, string $connectionName, string $queue, JobMap $map)
+    public function __construct(Container $container, SqsClient $sqs, array $job, string $connectionName, string $queue, PubSubMessagingJobMap $map)
     {
         parent::__construct($container, $sqs, $job, $connectionName, $queue);
         $this->map = $map;

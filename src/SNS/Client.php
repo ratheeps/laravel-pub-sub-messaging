@@ -17,8 +17,8 @@ class Client
      */
     public function __construct()
     {
-        $this->client = SnsClient::factory([
-            'version' => '2010-03-31',
+        $this->client = new SnsClient([
+            'version' => 'latest',
             'region' => config('pub-sub-messaging.sns.region'),
             'credentials' => new Credentials(
                 config('pub-sub-messaging.sns.key'),

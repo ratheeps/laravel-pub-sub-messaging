@@ -5,9 +5,8 @@ namespace Ratheeps\PubSubMessaging\Queue;
 
 
 use Exception;
-use Illuminate\Support\Arr;
 
-class JobMap
+class PubSubMessagingJobMap
 {
     /**
      * @var array

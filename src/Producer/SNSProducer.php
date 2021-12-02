@@ -1,23 +1,39 @@
 <?php
 
 
-namespace Ratheeps\PubSubMessaging\Publisher;
+namespace Ratheeps\PubSubMessaging\Producer;
 
 use Exception;
 use Illuminate\Auth\AuthManager;
 use Illuminate\Contracts\Config\Repository;
+use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Ratheeps\PubSubMessaging\SNS\Client;
 use Illuminate\Contracts\Auth\Authenticatable;
+use Ratheeps\PubSubMessaging\Traits\ResolvesPointers;
 
 /**
  * Class SNSPublisher
  * @package Ratheeps\PubSubMessaging\Publisher
  */
-class SNSPublisher
+class SNSProducer
 {
+    use ResolvesPointers;
+
+    /**
+     * The max length of a SQS message before it must be stored as a pointer.
+     *
+     * @var int
+     */
+    public const MAX_SQS_LENGTH = 250000;
+
+    const IF_NEEDED = 'IF_NEEDED';
+    const ALWAYS = 'ALWAYS';
+    const NEVER = 'NEVER';
+
     /** @var AuthManager */
     protected $auth;
 
@@ -38,6 +54,9 @@ class SNSPublisher
 
     /** @var Client */
     protected $SNSClient;
+
+   /** @var array */
+    protected $diskOptions;
 
     /**
      * SNSPublisher constructor.
@@ -63,7 +82,7 @@ class SNSPublisher
      * @param Model $model
      * @return $this
      */
-    public function performedOn(Model $model)
+    public function performedOn(Model $model): SNSProducer
     {
         $this->performedOn = $model;
         return $this;
@@ -73,7 +92,7 @@ class SNSPublisher
      * @param array $properties
      * @return $this
      */
-    public function withProperties(array $properties = [])
+    public function withProperties(array $properties = []): SNSProducer
     {
         if (!count($properties)) return $this;
         $this->properties = $properties;
@@ -81,7 +100,7 @@ class SNSPublisher
     }
 
     /**
-     * @param string $topic
+     * @param string|null $topic
      * @return $this
      */
     public function withTopic(string $topic = null)
@@ -114,11 +133,13 @@ class SNSPublisher
         if (!$this->topicArn) {
             throw new Exception('Message does not have Topic ARN');
         }
+
         $this->SNSClient->publish($this->topicArn, $this->generateMessage());
     }
 
     /**
      * @return false|string
+     * @throws BindingResolutionException
      */
     private function generateMessage()
     {
@@ -128,6 +149,33 @@ class SNSPublisher
         if ($this->authUser) {
             $messageArray['user'] = ['id' => $this->authUser->id];
         }
-        return json_encode($messageArray);
+
+
+        $sendToS3 = config('pub-sub-messaging.sns.disk_options.store_payload', 'IF_NEEDED');
+
+        $payloadString = json_encode($messageArray);
+        $payloadLength = strlen($payloadString);
+
+        switch ($sendToS3) {
+            case self::ALWAYS:
+                $useS3 = true;
+                break;
+            case self::IF_NEEDED:
+                $useS3 = ($payloadLength >= self::MAX_SQS_LENGTH);
+                break;
+            default:
+                $useS3 = false;
+                break;
+        }
+
+        if ($useS3){
+            $this->diskOptions = config('pub-sub-messaging.sns.disk_options');
+            $uuid = (string) Str::uuid();
+            $filepath = Arr::get($this->diskOptions, 'prefix', '') . "/{$uuid}.json";
+            $this->resolveDisk()->put($filepath, $payloadString);
+            return json_encode(['pointer' => $filepath]);
+        }
+
+        return $payloadString;
     }
 }
