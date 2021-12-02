@@ -4,6 +4,12 @@
     "license": "MIT",
     "keywords": ["laravel", "lumen", "queue", "sns subscription", "sns publishing", "microservices", "event-driven", "aws", "sqs", "sns"],
     "type": "library",
+    "authors": [
+        {
+            "name": "Ratheep",
+            "email": "ratheepan93@hotmail.com"
+        }
+    ],
     "require": {
         "php": ">=7.0",
         "aws/aws-sdk-php": "^3.189.0",
@@ -20,12 +26,6 @@
         "phpunit/phpunit": "~9",
         "friendsofphp/php-cs-fixer": "^3.2"
     },
-    "authors": [
-        {
-            "name": "Ratheep",
-            "email": "ratheepan93@hotmail.com"
-        }
-    ],
     "autoload": {
         "psr-4": {
             "Ratheeps\\PubSubMessaging\\": "src/"
@@ -37,5 +37,6 @@
                 "Ratheeps\\PubSubMessaging\\PubSubMessagingServiceProvider"
             ]
         }
-    }
+    },
+    "minimum-stability": "dev"
 }
