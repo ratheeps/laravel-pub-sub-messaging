@@ -22,7 +22,7 @@ return [
              *
              * @var null|string
              */
-            'store_payload' => 'ALWAYS',
+            'store_payload' => 'IF_NEEDED',
             'disk' => env('PUB_SUB_MESSAGING_DISK', 'pub_sub_messaging_s3'),
             'prefix' => ''
         ]
