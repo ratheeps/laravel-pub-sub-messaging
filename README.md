@@ -1,18 +1,20 @@
-# Laravel Pub?Sub Messages with AWS
+# Laravel Pub/Sub Messages with AWS
 
-simple extension to the [Illuminate/Queue](https://github.com/illuminate/queue) queue system used in [Laravel](https://laravel.com) and [Lumen](https://lumen.laravel.com/).
+Simple extension to the [Illuminate/Queue](https://github.com/illuminate/queue) queue system used in [Laravel](https://laravel.com) and [Lumen](https://lumen.laravel.com/).
 
 Using this connector allows [SQS](https://aws.amazon.com/sqs/) messages originating from a [SNS](https://aws.amazon.com/sns/) subscription to be worked on with Illuminate\Queue\Jobs\SqsJob.
 
 This is especially useful in a miroservice architecture where multiple services subscribe to a common topic with their queues and  publish an event to SNS.
 
-##Amazon SQS & SNS Extended Client Library
+## Amazon SQS & SNS Extended Client Library
 
 The **Amazon SQS Extended Client Library for PHP** enables you to manage Amazon SQS message payloads with Amazon S3. This is especially useful for storing and retrieving messages with a message payload size greater than the current SQS limit of 256 KB, up to a maximum of 2 GB. Specifically, you can use this library to:
 
 * Specify whether message payloads are always stored in Amazon S3 or only when a message's size exceeds a max size (defaults to 256 KB).
 * Send a message that references a single message object stored in an Amazon S3 bucket.
 * Get the corresponding message object from an Amazon S3 bucket.
+
+![#ee0701](https://via.placeholder.com/15/ee0701/000000?text=+) Note: This package under development not ready for production
 
 ## Requirements
 
