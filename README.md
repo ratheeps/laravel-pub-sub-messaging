@@ -1,12 +1,12 @@
-# AWS SQS SNS subscription queue and publisher with extended library
-==========================================
+# Laravel Pub?Sub Messages with AWS
+
 simple extension to the [Illuminate/Queue](https://github.com/illuminate/queue) queue system used in [Laravel](https://laravel.com) and [Lumen](https://lumen.laravel.com/).
 
 Using this connector allows [SQS](https://aws.amazon.com/sqs/) messages originating from a [SNS](https://aws.amazon.com/sns/) subscription to be worked on with Illuminate\Queue\Jobs\SqsJob.
 
 This is especially useful in a miroservice architecture where multiple services subscribe to a common topic with their queues and  publish an event to SNS.
 
-#Amazon SQS & SNS Extended Client Library
+##Amazon SQS & SNS Extended Client Library
 
 The **Amazon SQS Extended Client Library for PHP** enables you to manage Amazon SQS message payloads with Amazon S3. This is especially useful for storing and retrieving messages with a message payload size greater than the current SQS limit of 256 KB, up to a maximum of 2 GB. Specifically, you can use this library to:
 
@@ -212,7 +212,7 @@ class Post extends Model
 ```
 ## Diagram
 This diagram will be describing how your microservices are communicating with help of this package
-![Diagrams](https://github.com/ratheeps/laravel-pub-sub-messaging]/blob/master/diagrams.png?raw=true)
+![Diagrams](https://raw.githubusercontent.com/ratheeps/laravel-pub-sub-messaging/master/diagrams.png)
 
 ## References
 * **Sign up for AWS** -- Before you begin, you need an AWS account. For more information about creating an AWS account and retrieving your AWS credentials, see [AWS Account and Credentials](http://docs.aws.amazon.com/aws-sdk-php/v3/guide/guide/credentials.html?highlight=credentials) in the AWS SDK for PHP Developer Guide.
