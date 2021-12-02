@@ -1,4 +1,4 @@
-# Laravel Pub/Sub Messages with AWS
+# Laravel Pub/Sub Messaging with AWS
 
 Simple extension to the [Illuminate/Queue](https://github.com/illuminate/queue) queue system used in [Laravel](https://laravel.com) and [Lumen](https://lumen.laravel.com/).
 
