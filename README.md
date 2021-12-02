@@ -30,7 +30,7 @@ The **Amazon SQS Extended Client Library for PHP** enables you to manage Amazon 
 
 > We highly recommend you use a _private_ bucket when storing SQS payloads.  Payloads can contain sensitive information and should never be shared publicly.
 
-2. Run `composer require ratheeps/laravel-pub-sub-messaging` to install the queue driver.
+2. Run `composer require ratheeps/laravel-pub-sub-messaging` to install the package.
 
 3. Then, add the following queue settings to your `queue.php` file.
 
