@@ -21,7 +21,6 @@ The **Amazon SQS Extended Client Library for Laravel** enables you to manage Ama
 ## Requirements
 
 -   Laravel (tested with version >=7.0)
--   or Lumen (tested with version >=7.0)
 
 ## Installation
 
