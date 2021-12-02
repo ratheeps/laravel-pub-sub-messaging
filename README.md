@@ -20,8 +20,8 @@ The **Amazon SQS Extended Client Library for PHP** enables you to manage Amazon 
 
 ## Requirements
 
--   Laravel (tested with version 8.0)
--   or Lumen (tested with version 8.0)
+-   Laravel (tested with version >=7.0)
+-   or Lumen (tested with version >=7.0)
 
 ## Installation
 
@@ -221,7 +221,7 @@ This diagram will be describing how your microservices are communicating with he
 ## References
 * **Sign up for AWS** -- Before you begin, you need an AWS account. For more information about creating an AWS account and retrieving your AWS credentials, see [AWS Account and Credentials](http://docs.aws.amazon.com/aws-sdk-php/v3/guide/guide/credentials.html?highlight=credentials) in the AWS SDK for PHP Developer Guide.
 * **Sign up for Amazon SQS** -- Go to the Amazon [SQS console](https://console.aws.amazon.com/sqs/home?region=us-east-1) to sign up for the service.
-* **Minimum requirements** -- To use the sample application, you'll need PHP 8.0+ and [Composer](https://getcomposer.org/). For more information about the requirements, see the [Getting Started](http://docs.aws.amazon.com/aws-sdk-php/v3/guide/getting-started/) section of the Amazon SQS Developer Guide.
+* **Minimum requirements** -- To use the sample application, you'll need PHP 7.0+ and [Composer](https://getcomposer.org/). For more information about the requirements, see the [Getting Started](http://docs.aws.amazon.com/aws-sdk-php/v3/guide/getting-started/) section of the Amazon SQS Developer Guide.
 * **Further information** - Read the [API documentation](http://aws.amazon.com/documentation/sqs/) and the [SQS & S3 recommendations](http://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/s3-messages.html).
 * **SNS Large payload** - Read the [AWS Java SDK documentation](https://docs.aws.amazon.com/sns/latest/dg/large-message-payloads.html)
 * **SQS Large payload** - Read the [AWS Java SDK documentation](https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-s3-messages.html)
