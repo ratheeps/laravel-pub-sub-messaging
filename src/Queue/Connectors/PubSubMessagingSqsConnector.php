@@ -29,8 +29,7 @@ class PubSubMessagingSqsConnector extends SqsConnector implements ConnectorInter
      * Establish a queue connection.
      *
      * @param array $config
-     *
-     * @return Queue
+     * @return PubSubMessagingSqsQueue
      */
     public function connect(array $config)
     {

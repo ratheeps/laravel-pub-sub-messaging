@@ -9,7 +9,6 @@ use Illuminate\Contracts\Queue\Job;
 use Illuminate\Queue\SqsQueue as ParentSqsQueue;
 use Illuminate\Support\Arr;
 use Illuminate\Support\HigherOrderTapProxy;
-use Illuminate\Support\Str;
 use Ratheeps\PubSubMessaging\Queue\Jobs\PubSubMessagingSqsJob;
 use Ratheeps\PubSubMessaging\Traits\ResolvesPointers;
 
@@ -73,12 +72,12 @@ class PubSubMessagingSqsQueue extends ParentSqsQueue
      * @param PubSubMessagingJobMap|null $pubSubMessagingJobMap
      */
     public function __construct(
-        SqsClient             $sqs,
-        string                $default,
-        array                 $diskOptions,
-        string                $prefix = '',
-        string                $suffix = '',
-        bool                  $dispatchAfterCommit = false,
+        SqsClient $sqs,
+        string $default,
+        array $diskOptions,
+        string $prefix = '',
+        string $suffix = '',
+        bool $dispatchAfterCommit = false,
         ?PubSubMessagingJobMap $pubSubMessagingJobMap = null
     )
     {
@@ -94,25 +93,22 @@ class PubSubMessagingSqsQueue extends ParentSqsQueue
     /**
      * Push a raw payload onto the queue.
      *
-     * @param string $payload
-     * @param null $queue
+     * @param $payload
+     * @param $queue
      * @param array $options
-     * @param int $delay
+     * @param $delay
      * @return mixed|null
-     * @throws BindingResolutionException
      */
     public function pushRaw($payload, $queue = null, array $options = [], $delay = 0)
     {
         $payloadLength = strlen($payload);
 
         if ($payloadLength >= self::MAX_SQS_LENGTH || Arr::get($this->diskOptions, 'always_store')) {
-            $uuid = (string) Str::uuid();
-            $filepath = Arr::get($this->diskOptions, 'prefix', '') . "/{$uuid}.json";
-            $this->resolveDisk()->put($filepath, $payload);
+            $s3Payload = $this->storePayload($payload);
 
             return $this->sqs->sendMessage([
                 'QueueUrl' => $this->getQueue($queue),
-                'MessageBody' => json_encode(['pointer' => $filepath]),
+                'MessageBody' => $s3Payload,
                 'DelaySeconds' => $this->secondsUntil($delay),
             ])->get('MessageId');
         }

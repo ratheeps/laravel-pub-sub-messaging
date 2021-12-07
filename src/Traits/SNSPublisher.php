@@ -7,16 +7,16 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
-use Ratheeps\PubSubMessaging\Producer\SNSProducer as PubSubMessagingPublisher;
+use Ratheeps\PubSubMessaging\Publisher\SNSPublisher as PubSubMessagingPublisher;
 
 /**
  * Trait SNSPublisher
  * @package Ratheeps\PubSubMessaging\Traits
  */
-trait SNSProducer
+trait SNSPublisher
 {
 
-    public static function bootSNSProducer()
+    public static function bootSNSPublisher()
     {
         static::eventsToBePublish()->each(function ($eventName) {
             return static::$eventName(function (Model $model) use ($eventName) {

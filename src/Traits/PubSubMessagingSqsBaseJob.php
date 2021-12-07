@@ -6,6 +6,7 @@ use Aws\Sqs\SqsClient;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
 use Illuminate\Container\Container;
 use Ratheeps\PubSubMessaging\Queue\PubSubMessagingJobMap;
 
@@ -103,8 +104,8 @@ trait PubSubMessagingSqsBaseJob
             return $this->processMappedJobsForTopic($this->cachedRawBody);
         }
 
-        if ($pointer = $this->resolvePointer()) {
-            $body = $this->cachedRawBody = $this->resolveDisk()->get($pointer);
+        if ($S3Payload = $this->resolveS3Payload()) {
+            $body = $this->cachedRawBody = $this->retrievePayload($S3Payload);
             return $this->processMappedJobsForTopic($body);
         }
         $body = parent::getRawBody();
@@ -127,6 +128,7 @@ trait PubSubMessagingSqsBaseJob
         $message = json_decode(Arr::get($realBody, 'Message'), true);
 
         return json_encode([
+            "uuid" => (string) Str::uuid(),
             "job" => "Illuminate\Queue\CallQueuedHandler@call",
             "data" => [
                 "commandName" => $class,

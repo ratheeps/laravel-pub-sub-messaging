@@ -25,12 +25,11 @@ class PubSubMessagingServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->app->afterResolving(QueueManager::class, function (QueueManager $manager) {
-            $config = $this->app->make(Repository::class);
-            $manager->addConnector('pub-sub-messaging', function () use ($config) {
-                $map = new PubSubMessagingJobMap($config->get('pub-sub-messaging.map'));
-                return new PubSubMessagingSqsConnector($map);
-            });
+        $config = $this->app->make(Repository::class);
+        $manager = $this->app->make('queue');
+        $manager->addConnector('pub-sub-messaging-sqs', function () use ($config) {
+            $map = new PubSubMessagingJobMap($config->get('pub-sub-messaging.map'));
+            return new PubSubMessagingSqsConnector($map);
         });
     }
 

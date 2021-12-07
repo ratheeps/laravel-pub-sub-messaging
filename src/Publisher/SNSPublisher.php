@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Ratheeps\PubSubMessaging\Producer;
+namespace Ratheeps\PubSubMessaging\Publisher;
 
 use Exception;
 use Illuminate\Auth\AuthManager;
@@ -19,7 +19,7 @@ use Ratheeps\PubSubMessaging\Traits\ResolvesPointers;
  * Class SNSPublisher
  * @package Ratheeps\PubSubMessaging\Publisher
  */
-class SNSProducer
+class SNSPublisher
 {
     use ResolvesPointers;
 
@@ -28,7 +28,7 @@ class SNSProducer
      *
      * @var int
      */
-    public const MAX_SQS_LENGTH = 250000;
+    const MAX_SQS_LENGTH = 250000;
 
     const IF_NEEDED = 'IF_NEEDED';
     const ALWAYS = 'ALWAYS';
@@ -82,7 +82,7 @@ class SNSProducer
      * @param Model $model
      * @return $this
      */
-    public function performedOn(Model $model): SNSProducer
+    public function performedOn(Model $model): SNSPublisher
     {
         $this->performedOn = $model;
         return $this;
@@ -92,7 +92,7 @@ class SNSProducer
      * @param array $properties
      * @return $this
      */
-    public function withProperties(array $properties = []): SNSProducer
+    public function withProperties(array $properties = []): SNSPublisher
     {
         if (!count($properties)) return $this;
         $this->properties = $properties;
@@ -169,11 +169,7 @@ class SNSProducer
         }
 
         if ($useS3){
-            $this->diskOptions = config('pub-sub-messaging.sns.disk_options');
-            $uuid = (string) Str::uuid();
-            $filepath = Arr::get($this->diskOptions, 'prefix', '') . "/{$uuid}.json";
-            $this->resolveDisk()->put($filepath, $payloadString);
-            return json_encode(['pointer' => $filepath]);
+            return $this->storePayload($payloadString);
         }
 
         return $payloadString;

@@ -37,7 +37,7 @@ The **Amazon SQS Extended Client Library for Laravel** enables you to manage Ama
 <?php
 return [
     'connections' => [
-     'pub-sub-messaging-sqs' => [
+        'pub-sub-messaging-sqs' => [
             'driver' => 'pub-sub-messaging-sqs',
             'key' => env('PUB_SUB_MESSAGING_AWS_ACCESS_ID'),
             'secret' => env('PUB_SUB_MESSAGING_AWS_SECRET_ACCESS_KEY'),
@@ -46,6 +46,12 @@ return [
             'suffix' => env('PUB_SUB_MESSAGING_SQS_SUFFIX'),
             'region' => env('PUB_SUB_MESSAGING_AWS_DEFAULT_REGION', 'us-east-1'),
             'after_commit' => false,
+            'disk_options' => [
+                'always_store' => true,
+                'cleanup' => false,
+                'disk' => env('PUB_SUB_MESSAGING_DISK', 'pub_sub_messaging_s3'),
+                'prefix' => '',
+            ],
         ],
     ],
 ];
@@ -164,16 +170,17 @@ class TestSQSJob implements ShouldQueue
 ```
 
 ### Published event
+
 ```php
 <?php
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use Ratheeps\PubSubMessaging\Traits\SNSProducer;
+use Ratheeps\PubSubMessaging\Traits\SNSPublisher;
 
 class Post extends Model
 {
-    use SNSProducer;
+    use SNSPublisher;
 
     /**
      * @var array
